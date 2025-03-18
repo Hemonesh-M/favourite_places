@@ -30,15 +30,12 @@ class _MapScreenState extends State<MapScreen> {
           widget.isSelecting ? "Pick Your Location" : "Your Location",
         ),
         actions: [
-          if (widget.isSelecting)
+          if (widget.isSelecting && _selectedLocation != null)
             IconButton(
-              icon: Icon(Icons.save),
-              onPressed:
-                  _selectedLocation == null
-                      ? null
-                      : () {
-                        Navigator.pop(context, _selectedLocation);
-                      },
+              icon: const Icon(Icons.save),
+              onPressed: () {
+                Navigator.pop(context, _selectedLocation);
+              },
             ),
         ],
       ),
@@ -50,12 +47,13 @@ class _MapScreenState extends State<MapScreen> {
             widget.location.longitude,
           ),
           initialZoom: 13,
-          onTap: (tapPosition, point) {
-            if (!widget.isSelecting) return;
-            setState(() {
-              _selectedLocation = point;
-            });
-          },
+          onTap: widget.isSelecting
+              ? (tapPosition, point) {
+                  setState(() {
+                    _selectedLocation = point;
+                  });
+                }
+              : null,
         ),
         children: [
           TileLayer(
@@ -70,30 +68,24 @@ class _MapScreenState extends State<MapScreen> {
                   point: _selectedLocation!,
                   width: 50,
                   height: 50,
-                  child:
-                       const Icon(
-                        Icons.location_pin,
-                        color: Colors.red,
-                        size: 40,
-                      ),
-                  // child: null,
+                  child: const Icon(
+                    Icons.location_pin,
+                    color: Colors.red,
+                    size: 40,
+                  ),
                 ),
             ],
           ),
         ],
       ),
-      floatingActionButton:
-          widget.isSelecting
-              ? FloatingActionButton(
-                child: const Icon(Icons.check),
-                onPressed:
-                    _selectedLocation == null
-                        ? null
-                        : () {
-                          Navigator.pop(context, _selectedLocation);
-                        },
-              )
-              : null,
+      floatingActionButton: widget.isSelecting && _selectedLocation != null
+          ? FloatingActionButton(
+              onPressed: () {
+                Navigator.pop(context, _selectedLocation);
+              },
+              child: const Icon(Icons.check),
+            )
+          : null,
     );
   }
 }

@@ -21,7 +21,7 @@ class _PickLocationState extends State<PickLocation> {
 
     bool serviceEnabled;
     PermissionStatus permissionGranted;
-    LocationData _locationData;
+    LocationData locationData;
 
     serviceEnabled = await location.serviceEnabled();
     if (!serviceEnabled) {
@@ -41,9 +41,9 @@ class _PickLocationState extends State<PickLocation> {
     setState(() {
       isLoadingLocation = true;
     });
-    _locationData = await location.getLocation();
-    final lat=_locationData.latitude;
-    final lon=_locationData.longitude;
+    locationData = await location.getLocation();
+    final lat=locationData.latitude;
+    final lon=locationData.longitude;
     if(lat==null || lon==null){
       return;
     }

@@ -6,7 +6,6 @@ import 'package:favourite_places/widgets/add_image.dart';
 import 'package:favourite_places/widgets/pick_location.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:location/location.dart';
 
 class AddPlacesScreen extends ConsumerStatefulWidget {
   const AddPlacesScreen({super.key});
