@@ -6,12 +6,17 @@ import 'package:latlong2/latlong.dart';
 class MapScreen extends StatefulWidget {
   const MapScreen({
     super.key,
-    this.location = const PlaceLocation(longitude: 0, latitude: 0, address: ""),
+    this.location = const PlaceLocation(
+      latitude: 40.741895,
+      longitude: -73.989308,
+      address: "New York",
+    ),
     this.isSelecting = true,
   });
 
   final PlaceLocation location;
   final bool isSelecting;
+  // final Function(LatLng pos) _getLocationFromMap;
 
   @override
   State<MapScreen> createState() => _MapScreenState();
@@ -34,7 +39,8 @@ class _MapScreenState extends State<MapScreen> {
             IconButton(
               icon: const Icon(Icons.save),
               onPressed: () {
-                Navigator.pop(context, _selectedLocation);
+                print("SELECTED POS SEND BACK IS $_selectedLocation:");
+                Navigator.of(context).pop(_selectedLocation);
               },
             ),
         ],
@@ -42,18 +48,19 @@ class _MapScreenState extends State<MapScreen> {
       body: FlutterMap(
         mapController: _mapController,
         options: MapOptions(
+          onTap:
+              widget.isSelecting
+                  ? (tapPosition, point) {
+                    setState(() {
+                      _selectedLocation = point;
+                    });
+                  }
+                  : null,
           initialCenter: LatLng(
             widget.location.latitude,
             widget.location.longitude,
           ),
-          initialZoom: 13,
-          onTap: widget.isSelecting
-              ? (tapPosition, point) {
-                  setState(() {
-                    _selectedLocation = point;
-                  });
-                }
-              : null,
+          initialZoom: 16,
         ),
         children: [
           TileLayer(
@@ -62,30 +69,29 @@ class _MapScreenState extends State<MapScreen> {
             subdomains: ['a', 'b', 'c'],
           ),
           MarkerLayer(
-            markers: [
-              if (_selectedLocation != null)
-                Marker(
-                  point: _selectedLocation!,
-                  width: 50,
-                  height: 50,
-                  child: const Icon(
-                    Icons.location_pin,
-                    color: Colors.red,
-                    size: 40,
-                  ),
-                ),
-            ],
+            markers:
+                (widget.isSelecting == true && _selectedLocation == null)
+                    ? []
+                    : [
+                      Marker(
+                        point:
+                            _selectedLocation ??
+                            LatLng(
+                              widget.location.latitude,
+                              widget.location.longitude,
+                            ),
+                        width: 50,
+                        height: 50,
+                        child: const Icon(
+                          Icons.location_pin,
+                          color: Colors.red,
+                          size: 40,
+                        ),
+                      ),
+                    ],
           ),
         ],
       ),
-      floatingActionButton: widget.isSelecting && _selectedLocation != null
-          ? FloatingActionButton(
-              onPressed: () {
-                Navigator.pop(context, _selectedLocation);
-              },
-              child: const Icon(Icons.check),
-            )
-          : null,
     );
   }
 }

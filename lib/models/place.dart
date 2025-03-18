@@ -10,9 +10,10 @@ class PlaceLocation{
   final String address;
 }
 class Place {
-  Place(this.img, {required this.name,required this.location}) : id = uuid.v4();
+  Place(this.img, {required this.name,required this.location,id}) : id = id??uuid.v4();
   final String id;
   final String name;
   final File? img;
   final PlaceLocation location;
+
 }
