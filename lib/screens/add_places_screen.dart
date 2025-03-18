@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:favourite_places/main.dart';
+import 'package:favourite_places/models/place.dart';
 import 'package:favourite_places/provider/list_of_places.dart';
 import 'package:favourite_places/widgets/add_image.dart';
 import 'package:favourite_places/widgets/pick_location.dart';
@@ -19,18 +20,19 @@ class AddPlacesScreen extends ConsumerStatefulWidget {
 class _AddPlacesScreenState extends ConsumerState<AddPlacesScreen> {
   final _titleController = TextEditingController();
   File? selectedImage;
+  PlaceLocation? selectedLocation;
   void onPickImage(File img){
     selectedImage=img;
   }
-  void onPickLocation(Location loc){
-    
+  void onPickLocation(PlaceLocation loc){
+    selectedLocation=loc;
   }
   void _savePlace() {
     String enteredName = _titleController.text;
     if (enteredName.isEmpty ) {
       return;
     }
-    ref.read(newPlaceProvider.notifier).addPlace(enteredName,selectedImage!);
+    ref.read(newPlaceProvider.notifier).addPlace(enteredName,selectedImage!,selectedLocation!);
     Navigator.of(context).pop();
   }
 
@@ -47,6 +49,7 @@ class _AddPlacesScreenState extends ConsumerState<AddPlacesScreen> {
       body: SingleChildScrollView(
         padding: EdgeInsets.all(12),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             TextField(
               decoration: InputDecoration(labelText: "Name"),
@@ -63,6 +66,7 @@ class _AddPlacesScreenState extends ConsumerState<AddPlacesScreen> {
               },
               icon: Icon(Icons.save),
               label: Text("Add This Place"),
+
             ),
           ],
         ),

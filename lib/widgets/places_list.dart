@@ -23,11 +23,10 @@ class PlacesList extends StatelessWidget {
 
       itemBuilder: (context, index) {
         return ListTile(
-          shape: Border.all(
-            width: 1,
-            color: Theme.of(context).colorScheme.onSurface,
-            
-          ),
+          // shape: Border.all(
+          //   // width: 0.1,
+          //   color: Theme.of(context).colorScheme.onSurface,
+          // ),
           contentPadding: EdgeInsets.all(9),
           leading: CircleAvatar(
             radius: 26,
@@ -46,10 +45,23 @@ class PlacesList extends StatelessWidget {
           },
           title: Text(
             listOfPlaces[index].name,
+            // textAlign: TextAlign.center,
+            // textScaler: TextScaler.linear(2),
             style: Theme.of(
               context,
-            ).textTheme.bodyLarge!.copyWith(color: colorScheme.onSurface),
+            ).textTheme.bodyLarge!.copyWith(color: colorScheme.onSurface,fontWeight: FontWeight.bold),
           ),
+          subtitle: Text(
+            // textAlign: TextAlign.center,
+            listOfPlaces[index].location.address,
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall!.copyWith(color: colorScheme.onSurface),
+          ),
+          // trailing: SizedBox(
+          //   height: double.infinity,
+          //   width: 200,
+          //   child: Text(listOfPlaces[index].location.address)),
         );
       },
     );
