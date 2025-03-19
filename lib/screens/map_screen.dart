@@ -39,7 +39,6 @@ class _MapScreenState extends State<MapScreen> {
             IconButton(
               icon: const Icon(Icons.save),
               onPressed: () {
-                print("SELECTED POS SEND BACK IS $_selectedLocation:");
                 Navigator.of(context).pop(_selectedLocation);
               },
             ),
